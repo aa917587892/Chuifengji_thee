@@ -17,7 +17,7 @@ function clickColor (){
     console.log('dianl')
 }
 
-let modelColor
+let modelColor = ''
 
 
 
@@ -203,6 +203,7 @@ const modelScene = {
             },
             (xhr) => {
                 //加载进度
+                console.log(parseInt(xhr.loaded / xhr.total * 100) ,'加载进度')
                 loadTip.textContent = (parseInt(xhr.loaded / xhr.total * 100)) + '%加载中...';
 
             },
@@ -256,6 +257,27 @@ const modelScene = {
 
 
         window.addEventListener('click', onMouseClick, false);
+
+
+        const buttons = document.getElementsByClassName('buttonColor');
+
+        // 自定义颜色 为每个按钮添加点击事件监听器
+        [...buttons].forEach(button => {
+            button.addEventListener('click', function() {
+                 modelColor = this.value;
+                // 移除其他按钮的高亮样式
+                [...buttons].forEach(btn => {
+                    if (btn !== this) {
+                        btn.classList.remove('checkCss');
+                    }
+                });
+
+                this.classList.add('checkCss')
+                console.log('按钮的值是：', this.value);
+            });
+        });
+
+
 
         // 如果使用animate方法时，将此函数删除
         //controls.addEventListener( 'change', render );
@@ -476,8 +498,13 @@ function onMouseClick(event) {
         // 在这里可以进行模型的变化操作，例如修改样式、位置等
 
         // 示例：当点击模型时，将模型的颜色改为随机颜色
-        clickedObject.material.color.set(Math.random() * 0xffffff);
-        console.log(Math.random())
+        if(modelColor!=''){
+            // clickedObject.material.color.set(Math.random() * 0xffffff);
+            clickedObject.material.color.set(Number(modelColor))
+            console.log(Number(modelColor))
+        }
+
+        console.log(Math.random() * 0xffffff)
     }
 }
 
